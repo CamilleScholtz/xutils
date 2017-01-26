@@ -44,14 +44,14 @@ func main() {
 	}
 
 	// Connect to the X server using the DISPLAY environment variable.
-	x, err := xgbutil.NewConn()
+	X, err := xgbutil.NewConn()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
 	// Get the current desktop number.
-	cd, err := ewmh.CurrentDesktopGet(x)
+	cd, err := ewmh.CurrentDesktopGet(X)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -62,7 +62,7 @@ func main() {
 		fmt.Println(cd + 1)
 
 		if *argw {
-			r := xwindow.New(x, x.RootWin())
+			r := xwindow.New(X, X.RootWin())
 			r.Listen(xproto.EventMaskPropertyChange)
 			xevent.PropertyNotifyFun(func(XU *xgbutil.XUtil, ev xevent.PropertyNotifyEvent) {
 				a, err := xprop.AtomName(XU, ev.Atom)
@@ -73,7 +73,7 @@ func main() {
 
 				if a == "_NET_CURRENT_DESKTOP" {
 					// Get the current desktop number.
-					cd, err := ewmh.CurrentDesktopGet(x)
+					cd, err := ewmh.CurrentDesktopGet(X)
 					if err != nil {
 						fmt.Println(err)
 						os.Exit(1)
@@ -81,15 +81,15 @@ func main() {
 
 					fmt.Println(cd + 1)
 				}
-			}).Connect(x, r.Id)
-			xevent.Main(x)
+			}).Connect(X, r.Id)
+			xevent.Main(X)
 		}
 
 		os.Exit(0)
 	}
 
 	// Get the total number of desktops.
-	td, err := ewmh.NumberOfDesktopsGet(x)
+	td, err := ewmh.NumberOfDesktopsGet(X)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -125,7 +125,7 @@ func main() {
 		d = (*args)[0] - 1
 	}
 
-	if err := ewmh.CurrentDesktopReq(x, d); err != nil {
+	if err := ewmh.CurrentDesktopReq(X, d); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}

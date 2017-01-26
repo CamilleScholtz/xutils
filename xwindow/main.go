@@ -36,21 +36,21 @@ func main() {
 	}
 
 	// Connect to the X server using the DISPLAY environment variable.
-	x, err := xgbutil.NewConn()
+	X, err := xgbutil.NewConn()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
 	// Get the active window ID.
-	w, err := ewmh.ActiveWindowGet(x)
+	w, err := ewmh.ActiveWindowGet(X)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
 	// Get active window name.
-	n, err := ewmh.WmNameGet(x, w)
+	n, err := ewmh.WmNameGet(X, w)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -64,7 +64,7 @@ func main() {
 	// Print the current desktop number.
 	if *argw {
 		fmt.Println(n)
-		r := xwindow.New(x, x.RootWin())
+		r := xwindow.New(X, X.RootWin())
 		r.Listen(xproto.EventMaskPropertyChange)
 		var on string
 		xevent.PropertyNotifyFun(func(XU *xgbutil.XUtil, ev xevent.PropertyNotifyEvent) {
@@ -76,14 +76,14 @@ func main() {
 
 			if a == "_NET_ACTIVE_WINDOW" {
 				// Get the active window ID.
-				w, err := ewmh.ActiveWindowGet(x)
+				w, err := ewmh.ActiveWindowGet(X)
 				if err != nil {
 					fmt.Println(err)
 					os.Exit(1)
 				}
 
 				// Get active window name.
-				n, err := ewmh.WmNameGet(x, w)
+				n, err := ewmh.WmNameGet(X, w)
 				if err != nil {
 					return
 				}
@@ -93,8 +93,8 @@ func main() {
 				}
 				on = n
 			}
-		}).Connect(x, r.Id)
-		xevent.Main(x)
+		}).Connect(X, r.Id)
+		xevent.Main(X)
 
 		os.Exit(0)
 	}
