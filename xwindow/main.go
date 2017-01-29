@@ -42,17 +42,18 @@ func main() {
 	}
 
 	// Get the active window ID.
-	w, err := ewmh.ActiveWindowGet(X)
+	var w xproto.Window
+	w, err = ewmh.ActiveWindowGet(X)
 	if err != nil {
 		fmt.Println(err)
-		os.Exit(1)
 	}
 
 	// Get active window name.
-	n, err := ewmh.WmNameGet(X, w)
+	var n string
+	n, err = ewmh.WmNameGet(X, w)
 	if err != nil {
+		n = ""
 		fmt.Println(err)
-		os.Exit(1)
 	}
 
 	if len(os.Args) == 1 {
