@@ -8,7 +8,6 @@ import (
 	"github.com/BurntSushi/xgbutil"
 	"github.com/BurntSushi/xgbutil/ewmh"
 	"github.com/BurntSushi/xgbutil/xevent"
-	"github.com/BurntSushi/xgbutil/xprop"
 	"github.com/BurntSushi/xgbutil/xwindow"
 	"github.com/go2c/optparse"
 )
@@ -64,35 +63,32 @@ func main() {
 	// Print the current desktop number.
 	if *argw {
 		fmt.Println(n)
+
 		r := xwindow.New(X, X.RootWin())
 		r.Listen(xproto.EventMaskPropertyChange)
-		var on string
+
+		var oldEv uint16
 		xevent.PropertyNotifyFun(func(XU *xgbutil.XUtil, ev xevent.PropertyNotifyEvent) {
-			a, err := xprop.AtomName(XU, ev.Atom)
+			// Only listen to focus change events.
+			// TODO: Can I somehow do this in r.Listen?
+			if ev.Atom != 343 || ev.Sequence == oldEv {
+				return
+			}
+			oldEv = ev.Sequence
+
+			// Get the active window ID.
+			w, err := ewmh.ActiveWindowGet(X)
 			if err != nil {
-				fmt.Println(err)
-				os.Exit(1)
+				return
 			}
 
-			if a == "_NET_ACTIVE_WINDOW" {
-				// Get the active window ID.
-				w, err := ewmh.ActiveWindowGet(X)
-				if err != nil {
-					fmt.Println(err)
-					os.Exit(1)
-				}
-
-				// Get active window name.
-				n, err := ewmh.WmNameGet(X, w)
-				if err != nil {
-					return
-				}
-
-				if n != on {
-					fmt.Println(n)
-				}
-				on = n
+			// Get active window name.
+			n, err := ewmh.WmNameGet(X, w)
+			if err != nil {
+				return
 			}
+
+			fmt.Println(n)
 		}).Connect(X, r.Id)
 		xevent.Main(X)
 

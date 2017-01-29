@@ -8,7 +8,6 @@ import (
 	"github.com/BurntSushi/xgbutil"
 	"github.com/BurntSushi/xgbutil/ewmh"
 	"github.com/BurntSushi/xgbutil/xevent"
-	"github.com/BurntSushi/xgbutil/xprop"
 	"github.com/BurntSushi/xgbutil/xwindow"
 	"github.com/go2c/optparse"
 )
@@ -64,23 +63,21 @@ func main() {
 		if *argw {
 			r := xwindow.New(X, X.RootWin())
 			r.Listen(xproto.EventMaskPropertyChange)
+
 			xevent.PropertyNotifyFun(func(XU *xgbutil.XUtil, ev xevent.PropertyNotifyEvent) {
-				a, err := xprop.AtomName(XU, ev.Atom)
+				// Only listen to desktop change events.
+				// TODO: Can I somehow do this in r.Listen?
+				if ev.Atom != 388 {
+					return
+				}
+
+				// Get the current desktop number.
+				cd, err := ewmh.CurrentDesktopGet(X)
 				if err != nil {
-					fmt.Println(err)
-					os.Exit(1)
+					return
 				}
 
-				if a == "_NET_CURRENT_DESKTOP" {
-					// Get the current desktop number.
-					cd, err := ewmh.CurrentDesktopGet(X)
-					if err != nil {
-						fmt.Println(err)
-						os.Exit(1)
-					}
-
-					fmt.Println(cd + 1)
-				}
+				fmt.Println(cd + 1)
 			}).Connect(X, r.Id)
 			xevent.Main(X)
 		}
