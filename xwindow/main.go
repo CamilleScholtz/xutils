@@ -52,7 +52,6 @@ func main() {
 	var n string
 	n, err = ewmh.WmNameGet(X, w)
 	if err != nil {
-		n = ""
 		fmt.Println(err)
 	}
 

@@ -50,10 +50,11 @@ func main() {
 	}
 
 	// Get the current desktop number.
-	cd, err := ewmh.CurrentDesktopGet(X)
+	var cd uint
+	cd, err = ewmh.CurrentDesktopGet(X)
 	if err != nil {
+		cd = 0
 		fmt.Println(err)
-		os.Exit(1)
 	}
 
 	// Print the current desktop number.
