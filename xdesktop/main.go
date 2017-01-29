@@ -67,7 +67,7 @@ func main() {
 			xevent.PropertyNotifyFun(func(XU *xgbutil.XUtil, ev xevent.PropertyNotifyEvent) {
 				// Only listen to desktop change events.
 				// TODO: Can I somehow do this in r.Listen?
-				if ev.Atom != 388 {
+				if ev.Atom != 372 {
 					return
 				}
 
