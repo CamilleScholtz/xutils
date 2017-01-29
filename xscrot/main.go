@@ -10,6 +10,7 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
+	"time"
 	"unicode"
 
 	"github.com/BurntSushi/xgb/xproto"
@@ -23,7 +24,7 @@ func main() {
 	argh := optparse.Bool("help", 'h', false)
 
 	// Parse arguments.
-	_, err := optparse.Parse()
+	vals, err := optparse.Parse()
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Invaild argument, use -h for a list of arguments!")
 		os.Exit(1)
@@ -82,7 +83,6 @@ func main() {
 		}
 	}
 
-	fmt.Println(g.X, g.Y, g.Width, g.Height)
 	// Get the image data of the pixmap.
 	pix, err := xproto.GetImage(X.Conn(), xproto.ImageFormatZPixmap, xproto.Drawable(X.RootWin()),
 		g.X, g.Y, g.Width, g.Height, (1<<32)-1).Reply()
@@ -109,7 +109,12 @@ func main() {
 	img := image.NewRGBA(image.Rect(0, 0, int(g.Width), int(g.Height)))
 	img.Pix = dat
 
-	f, err := os.Create("test.png")
+	var f *os.File
+	if len(vals) != 0 {
+		f, err = os.Create(vals[0])
+	} else {
+		f, err = os.Create(strconv.Itoa(int(time.Now().Unix())) + ".png")
+	}
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
