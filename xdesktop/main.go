@@ -8,6 +8,7 @@ import (
 	"github.com/BurntSushi/xgbutil"
 	"github.com/BurntSushi/xgbutil/ewmh"
 	"github.com/BurntSushi/xgbutil/xevent"
+	"github.com/BurntSushi/xgbutil/xprop"
 	"github.com/BurntSushi/xgbutil/xwindow"
 	"github.com/go2c/optparse"
 )
@@ -68,7 +69,11 @@ func main() {
 			xevent.PropertyNotifyFun(func(XU *xgbutil.XUtil, ev xevent.PropertyNotifyEvent) {
 				// Only listen to desktop change events.
 				// TODO: Can I somehow do this in r.Listen?
-				if ev.Atom != 372 {
+				a, err := xprop.Atm(XU, "_NET_CURRENT_DESKTOP")
+				if err != nil {
+					return
+				}
+				if ev.Atom != a {
 					return
 				}
 

@@ -8,6 +8,7 @@ import (
 	"github.com/BurntSushi/xgbutil"
 	"github.com/BurntSushi/xgbutil/ewmh"
 	"github.com/BurntSushi/xgbutil/xevent"
+	"github.com/BurntSushi/xgbutil/xprop"
 	"github.com/BurntSushi/xgbutil/xwindow"
 	"github.com/go2c/optparse"
 )
@@ -71,7 +72,11 @@ func main() {
 		xevent.PropertyNotifyFun(func(XU *xgbutil.XUtil, ev xevent.PropertyNotifyEvent) {
 			// Only listen to focus change events.
 			// TODO: Can I somehow do this in r.Listen?
-			if ev.Atom != 343 || ev.Sequence == oldEv {
+			a, err := xprop.Atm(XU, "_NET_ACTIVE_WINDOW")
+			if err != nil {
+				return
+			}
+			if ev.Atom != a || ev.Sequence == oldEv {
 				return
 			}
 			oldEv = ev.Sequence
