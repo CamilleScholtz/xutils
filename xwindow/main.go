@@ -21,7 +21,8 @@ func main() {
 	// Parse arguments.
 	_, err := optparse.Parse()
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Invaild argument, use -h for a list of arguments!")
+		fmt.Fprintln(os.Stderr,
+			"Invaild argument, use -h for a list of arguments!")
 		os.Exit(1)
 	}
 
@@ -69,7 +70,8 @@ func main() {
 		r.Listen(xproto.EventMaskPropertyChange)
 
 		var oldEv uint16
-		xevent.PropertyNotifyFun(func(XU *xgbutil.XUtil, ev xevent.PropertyNotifyEvent) {
+		xevent.PropertyNotifyFun(func(XU *xgbutil.XUtil,
+			ev xevent.PropertyNotifyEvent) {
 			// Only listen to focus change events.
 			// TODO: Can I somehow do this in r.Listen?
 			a, err := xprop.Atm(XU, "_NET_ACTIVE_WINDOW")
