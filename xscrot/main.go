@@ -26,7 +26,8 @@ func main() {
 	// Parse arguments.
 	vals, err := optparse.Parse()
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Invaild argument, use -h for a list of arguments!")
+		fmt.Fprintln(os.Stderr,
+			"Invaild argument, use -h for a list of arguments!")
 		os.Exit(1)
 	}
 
@@ -48,14 +49,16 @@ func main() {
 	}
 
 	// Get the geometry of the RootWin.
-	g, err := xproto.GetGeometry(X.Conn(), xproto.Drawable(X.RootWin())).Reply()
+	g, err := xproto.GetGeometry(X.Conn(),
+		xproto.Drawable(X.RootWin())).Reply()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
 	if *args {
-		cmd := exec.Command("slop", "-b", "10", "-c", "0.952,0.952,0.952")
+		cmd := exec.Command("slop", "-b", "10", "-c",
+			"0.952,0.952,0.952")
 		var b bytes.Buffer
 		cmd.Stdout = &b
 
@@ -79,12 +82,14 @@ func main() {
 			y, _ := strconv.Atoi(sg[3])
 			width, _ := strconv.Atoi(sg[0])
 			height, _ := strconv.Atoi(sg[1])
-			g.X, g.Y, g.Width, g.Height = int16(x), int16(y), uint16(width), uint16(height)
+			g.X, g.Y, g.Width, g.Height = int16(x), int16(y),
+				uint16(width), uint16(height)
 		}
 	}
 
 	// Get the image data of the pixmap.
-	pix, err := xproto.GetImage(X.Conn(), xproto.ImageFormatZPixmap, xproto.Drawable(X.RootWin()),
+	pix, err := xproto.GetImage(X.Conn(), xproto.ImageFormatZPixmap,
+		xproto.Drawable(X.RootWin()),
 		g.X, g.Y, g.Width, g.Height, (1<<32)-1).Reply()
 	if err != nil {
 		fmt.Println(err)
@@ -106,14 +111,16 @@ func main() {
 		}
 	}
 
-	img := image.NewRGBA(image.Rect(0, 0, int(g.Width), int(g.Height)))
+	img := image.NewRGBA(image.Rect(0, 0, int(g.Width),
+		int(g.Height)))
 	img.Pix = dat
 
 	var f *os.File
 	if len(vals) != 0 {
 		f, err = os.Create(vals[0])
 	} else {
-		f, err = os.Create(strconv.Itoa(int(time.Now().Unix())) + ".png")
+		f, err = os.Create(strconv.Itoa(int(time.Now().Unix())) +
+			".png")
 	}
 	if err != nil {
 		fmt.Println(err)
