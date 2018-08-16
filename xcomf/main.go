@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"os"
 	"strconv"
 
@@ -74,7 +75,7 @@ func gamma(r, g, b uint8, size uint16, comf bool) ([]uint16, []uint16,
 		fb := float64(b) / 255
 		fs := float64(size)
 		if comf {
-			fb *= 1.618
+			fb *= math.Phi
 			fs *= 0.85
 			fs += float64(i) * 0.5
 		}
