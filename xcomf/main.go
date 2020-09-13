@@ -8,60 +8,9 @@ import (
 
 	"github.com/BurntSushi/xgb/randr"
 	"github.com/BurntSushi/xgbutil"
-	"github.com/go2c/optparse"
 	"github.com/maruel/temperature"
+	"github.com/tzvetkoff-go/optparse"
 )
-
-func main() {
-	// Define valid arguments.
-	argh := optparse.Bool("help", 'h', false)
-
-	// Parse arguments.
-	vals, err := optparse.Parse()
-	if err != nil {
-		fmt.Fprintln(os.Stderr,
-			"Invaild argument, use -h for a list of arguments!")
-		os.Exit(1)
-	}
-
-	// Print help.
-	if *argh {
-		fmt.Println("Usage: xcomf [arguments] [intensity]")
-		fmt.Println("")
-		fmt.Println("arguments:")
-		fmt.Println("  -h,   --help            print help and exit")
-		os.Exit(0)
-	}
-
-	// Reset gamma to default value if no vals have been given.
-	if len(vals) == 0 {
-		vals = []string{"0"}
-	}
-
-	// Only alow intergers in vals.
-	i, err := strconv.Atoi(vals[0])
-	if err != nil || i < 0 || i > 3 {
-		fmt.Fprintln(os.Stderr,
-			"Please choose an intensity between 0 and 3!")
-		os.Exit(1)
-	}
-
-	var t uint16
-	switch i {
-	case 0:
-		t = 6500
-	case 1:
-		t = 4000
-	case 2:
-		t = 3500
-	case 3:
-		t = 3000
-	}
-
-	if err := set(temperature.ToRGB(t)); err != nil {
-		panic(err)
-	}
-}
 
 func gamma(r, g, b uint8, size uint16, comf bool) ([]uint16, []uint16,
 	[]uint16) {
@@ -127,4 +76,55 @@ func set(r, g, b uint8) error {
 	}
 
 	return nil
+}
+
+func main() {
+	// Define valid arguments.
+	argh := optparse.Bool("help", 'h', false)
+
+	// Parse arguments.
+	vals, err := optparse.Parse()
+	if err != nil {
+		fmt.Fprintln(os.Stderr,
+			"Invaild argument, use -h for a list of arguments!")
+		os.Exit(1)
+	}
+
+	// Print help.
+	if *argh {
+		fmt.Println("Usage: xcomf [arguments] [intensity]")
+		fmt.Println("")
+		fmt.Println("arguments:")
+		fmt.Println("  -h,   --help            print help and exit")
+		os.Exit(0)
+	}
+
+	// Reset gamma to default value if no vals have been given.
+	if len(vals) == 0 {
+		vals = []string{"0"}
+	}
+
+	// Only alow intergers in vals.
+	i, err := strconv.Atoi(vals[0])
+	if err != nil || i < 0 || i > 3 {
+		fmt.Fprintln(os.Stderr,
+			"Please choose an intensity between 0 and 3!")
+		os.Exit(1)
+	}
+
+	var t uint16
+	switch i {
+	case 0:
+		t = 6500
+	case 1:
+		t = 4000
+	case 2:
+		t = 3500
+	case 3:
+		t = 3000
+	}
+
+	if err := set(temperature.ToRGB(t)); err != nil {
+		panic(err)
+	}
 }

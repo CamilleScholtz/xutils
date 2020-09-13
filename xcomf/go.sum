@@ -1,8 +1,5 @@
-github.com/BurntSushi/xgb v0.0.0-20200324125942-20f126ea2843 h1:3iF31c7rp7nGZVDv7YQ+VxOgpipVfPKotLXykjZmwM8=
 github.com/BurntSushi/xgb v0.0.0-20200324125942-20f126ea2843/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
-github.com/BurntSushi/xgbutil v0.0.0-20190907113008-ad855c713046 h1:O/r2Sj+8QcMF7V5IcmiE2sMFV2q3J47BEirxbXJAdzA=
 github.com/BurntSushi/xgbutil v0.0.0-20190907113008-ad855c713046/go.mod h1:uw9h2sd4WWHOPdJ13MQpwK5qYWKYDumDqxWWIknEQ+k=
-github.com/go2c/optparse v0.1.0 h1:JnZxpex05iIRq/byON8X22sN2WIEnIo9lTk8r8dP6+I=
-github.com/go2c/optparse v0.1.0/go.mod h1:ePMw9vqVohKMXeXPiAn/OIkA2nOU36Rj3919EtWbkTU=
-github.com/maruel/temperature v0.0.0-20180409015833-472e178ac87a h1:NCSgg8Trmt6Dken/cueajnsYHZwOMp46fXmmnoJzTjE=
-github.com/maruel/temperature v0.0.0-20180409015833-472e178ac87a/go.mod h1:ucLpxshToh3Lz1ndQk85QFx3xGgG+sCKkL7UioY20AE=
+github.com/maruel/temperature v1.0.0 h1:78FX+YkXHH7iBSNcZBqRW3TN6gLOHlhYvjqvdP/aQ5Q=
+github.com/maruel/temperature v1.0.0/go.mod h1:vIWWv/2SYBsJV65/FQAidxWQly41yYLUTaTzGDJEQWc=
+github.com/tzvetkoff-go/optparse v0.0.0-20200613135135-7718cf5540c1/go.mod h1:CscPtmJtl0IMzPKkk7RbaycLCdW4UC1VlOXwmYyrlJ0=
